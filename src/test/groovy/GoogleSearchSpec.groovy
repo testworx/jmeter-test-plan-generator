@@ -3,7 +3,7 @@ import geb.Browser
 
 class GoogleSearchSpec extends GebReportingSpec {
 
-  def "can get to the current Book of Geb"() {
+  def "I can search for Wikipedia"() {
       given:
         Browser.drive {
           go "http://google.com/ncr"
