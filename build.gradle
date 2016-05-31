@@ -18,12 +18,55 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: "net.foragerr.jmeter"
 
+ext {
+    drivers = ["firefoxproxy"]
+
+    ext {
+        groovyVersion = '2.4.4'
+        gebVersion = '0.13.1'
+        seleniumVersion = '2.51.0'
+        chromeDriverVersion = '2.19'
+        phantomJsVersion = '1.9.7'
+    }
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.4'
+    testCompile "org.gebish:geb-spock:$gebVersion"
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
+        exclude group: "org.codehaus.groovy"
+    }
+    testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+    // If using JUnit, need to depend on geb-junit (3 or 4)
+    testCompile "org.gebish:geb-junit4:$gebVersion"
+
+    // Drivers
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+}
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+
+    task firefoxJmeterTest(type: Test) {
+        reports {
+            html.destination = reporting.file("$name/tests")
+            junitXml.destination = file("$buildDir/test-results/$name")
+        }
+
+        outputs.upToDateWhen { false }  // Always run tests
+
+        systemProperty "geb.build.reportsDir", reporting.file("$name/geb")
+        systemProperty "geb.env", "firefoxproxy"
+
+        // If you wanted to set the baseUrl in your build…
+        // systemProperty "geb.build.baseUrl", "http://myapp.com"
+    }
 
 jmeter {
   if(project.hasProperty('recording')) {
@@ -33,7 +76,7 @@ jmeter {
     jmTestFiles = [file("src/test/jmeter/TestPlan.Parameterised.jmx")] //if jmx file is not in the default location
   }
   else {
-
+      //Default to the first jmx file found in:  src/test/jmeter/
   }
   minHeapSize = '512m'
   maxHeapSize = '1024m'
@@ -41,8 +84,8 @@ jmeter {
   enableExtendedReports = true //produce Graphical and CSV reports
 }
 
-// In this section you declare the dependencies for your production and test code
-dependencies {
-    // We use the latest groovy 2.x version for building this library
-    compile 'org.codehaus.groovy:groovy-all:2.4.5'
-}
+// // In this section you declare the dependencies for your production and test code
+// dependencies {
+//     // We use the latest groovy 2.x version for building this library
+//     compile 'org.codehaus.groovy:groovy-all:2.4.5'
+// }
