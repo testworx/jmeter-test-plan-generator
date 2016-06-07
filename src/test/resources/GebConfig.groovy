@@ -26,3 +26,4 @@ environments {
 }
 
 baseUrl = "http://gebish.org"
+reportsDir = 'build/tests'
