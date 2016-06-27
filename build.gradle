@@ -69,7 +69,7 @@ repositories {
     }
 
 jmeter {
-  if(project.hasProperty('recording')) {
+  if(project.hasProperty('record')) {
     jmTestFiles = [file("src/main/resources/Recording.Template.jmx")] //if jmx file is not in the default location
   }
   else if(project.hasProperty('test')) {

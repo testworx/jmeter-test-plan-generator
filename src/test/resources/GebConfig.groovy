@@ -5,7 +5,7 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.Proxy
 
 waiting {
-	timeout = 2
+	timeout = 10
 }
 
 environments {

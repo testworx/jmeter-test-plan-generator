@@ -39,22 +39,12 @@
         <boolProp name="CookieManager.clearEachIteration">true</boolProp>
       </CookieManager>
       <hashTree/>
-      <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="csrf Regular Expression Extractor" enabled="true">
+      <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Result URL Regular Expression Extractor" enabled="true">
         <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-        <stringProp name="RegexExtractor.refname">CSRF_TOKEN</stringProp>
-        <stringProp name="RegexExtractor.regex">Set-Cookie: csrfToken=(.+)</stringProp>
+        <stringProp name="RegexExtractor.refname">RESULT_URL</stringProp>
+        <stringProp name="RegexExtractor.regex">x22([a-z]+):\\\/\\\/(.+?)\\\/\\\\x22</stringProp>
         <stringProp name="RegexExtractor.template">$1$</stringProp>
-        <stringProp name="RegexExtractor.default">${CSRF_TOKEN}</stringProp>
-        <stringProp name="RegexExtractor.match_number">1</stringProp>
-        <stringProp name="Sample.scope">all</stringProp>
-      </RegexExtractor>
-      <hashTree/>
-      <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="r Regular Expression Extractor" enabled="true">
-        <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-        <stringProp name="RegexExtractor.refname">R_TOKEN</stringProp>
-        <stringProp name="RegexExtractor.regex">r=(.+?)&amp;</stringProp>
-        <stringProp name="RegexExtractor.template">$1$</stringProp>
-        <stringProp name="RegexExtractor.default">CSRF_TOKEN_NOT_FOUND</stringProp>
+        <stringProp name="RegexExtractor.default">${RESULT_URL}</stringProp>
         <stringProp name="RegexExtractor.match_number">1</stringProp>
         <stringProp name="Sample.scope">all</stringProp>
       </RegexExtractor>
@@ -93,6 +83,21 @@
         </objProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1466437151000</longProp>
+        <longProp name="ThreadGroup.end_time">1466437151000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
       <hashTree/>
     </hashTree>
   </hashTree>
