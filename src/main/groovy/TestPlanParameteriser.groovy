@@ -1,31 +1,33 @@
-Node test_recording = new XmlParser().parse('../resources/Recording.Template.jmx')
+Node test_recording = new XmlParser(false, false).parse('../resources/Recording.Template.jmx')
 Node test_template = new XmlParser().parse('../resources/TestPlan.Template.jmx')
 Node test_plan = test_template
 
 /**
  * Step 1.
- * Parameterise the required session keys
+ * Parameterise the required url values
  */
-//replace the unique csrfToken value with parameterised value
+
+//replace the url value that takes us to the result page with parameterised value
 test_recording.'**'.findAll { elementProp ->
-    elementProp.@name == 'csrfToken' }.each {
+    elementProp.@name == 'url' }.each {
 
     it.'**'.findAll { stringProp ->
         stringProp.@name == 'Argument.value' }.each {
-
-        it.children()[0] = '${CSRF_TOKEN}'
+          println 'stringProp: parameterising value: '+it.value()
+        it.children()[0] = '${RESULT_URL}'
     }
 }
 
-//replace the unique r value with parameterised value
-test_recording.'**'.findAll { elementProp ->
-    elementProp.@name == 'r' }.each {
-
-    it.'**'.findAll { stringProp ->
-        stringProp.@name == 'Argument.value' }.each {
-        it.children()[0] = '${R_TOKEN}'
-    }
-}
+// //replace the url value that takes us to the result page with parameterised value
+// test_recording.'**'.findAll { stringProp ->
+//     stringProp.@name == 'HTTPSampler.domain' }.each {
+//
+//     if (it.children()[0] =='www.wikipedia.org') {
+//     // if (!it.children()[0].value().contains('.google.')) {
+//       println 'HTTPSampler.domain: parameterising value: '+it.value()
+//       it.children()[0] = '${RESULT_URL}'
+//     }
+// }
 
 /**
  * Step 2.
