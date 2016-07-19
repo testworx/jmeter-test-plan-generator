@@ -5,6 +5,8 @@ class GoogleSearchSpec extends GebReportingSpec {
 
   def "I can search for Wikipedia"() {
       given:
+      def searchTerm = "wikipedia"
+
         Browser.drive {
           go "http://google.com/ncr"
 
@@ -13,7 +15,7 @@ class GoogleSearchSpec extends GebReportingSpec {
 
           // enter wikipedia into the search field
           when:
-          $("input", name: "q").value("wikipedia")
+          $("input", name: "q").value(searchTerm)
 
           // wait for the change to results page to happen
           // (google updates the page dynamically without a new request)
@@ -29,11 +31,11 @@ class GoogleSearchSpec extends GebReportingSpec {
           // click the link
           firstLink.click()
 
-          // then:
-          // // wait for Google's javascript to redirect to Wikipedia
-          // waitFor {
-          //   title.toLowerCase().contains("BBC")
-          // }
+          then:
+          // wait for Google's javascript to redirect to Wikipedia
+          waitFor {
+            title.toLowerCase().contains(searchTerm)
+          }
   }
 }
 }
